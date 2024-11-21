@@ -1,13 +1,14 @@
 ////   DEPENDENCIAS  ////
+require("dotenv").config()
 const PATH = require("path");
 const FS = require("fs");
 const DISCORD = require("discord.js");
 const { getFiles, executeFile, getDirPaths, logger } = require(PATH.resolve("src","bot","utilities","utilities.js"));
-require("dotenv").config()
 const { generateDependencyReport } = require('@discordjs/voice');
-
 console.log(generateDependencyReport());
 ////   CONSTANTES    ////}
+const App = EXPRESS();
+const Port = process.env.BOT_URL.split(':')[3];
 const Config = JSON.parse(FS.readFileSync(PATH.resolve("config","db.json")));
 ////   CLIENTE       ////
 const Client = new DISCORD.Client({ intents: [
@@ -52,3 +53,10 @@ try {
 } catch(error){
     logger.error(`[BOT INDEX] - No se pudo prender el bot: ${error}`);
 }
+////   KEEPALIVE     ////
+App.get('/', (request, response) => {
+    response.send('Señal recibida.');
+});
+App.listen(Port, () => {
+    console.log(`Bot manteniendose en linea por el puerto: ${Port}`);
+});
