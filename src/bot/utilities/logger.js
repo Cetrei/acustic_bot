@@ -1,5 +1,8 @@
 ////   DEPENDENCIAS  ////
-const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
+const PATH = require("path");
+const FS = require("fs");
+const Config = JSON.parse(FS.readFileSync(PATH.resolve("config","db.json")));
+const LOG_LEVEL = Config.LogLevel || 'info';
 ////   INICIO CODIGO ////
 const levels = {
     error: 0,

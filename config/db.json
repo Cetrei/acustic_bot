@@ -12,5 +12,6 @@
     "onlySalsaHellYea": true,
     "MinecraftAdmins": [
         "819648671049711666"
-    ]
+    ],
+    "LogLevel": "debug"
 }
