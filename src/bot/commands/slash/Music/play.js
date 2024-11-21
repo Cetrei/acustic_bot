@@ -596,13 +596,13 @@ async function playSong(queue, Interaction, playlist = false) {
     console.log(`Intentando reproducir: ${song.url}`);
     let resource;
 
-    console.log(resource);
     try {
         resource = await extractResource(song, playlist);
     } catch (error) {
         console.error("Error al extraer recurso:", error);
         return createAnswer(Interaction, "Error al reproducir el recurso.", true);
     }
+    console.log(resource);
 
     queue.player.play(resource);
 
