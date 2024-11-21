@@ -3,6 +3,7 @@ require("dotenv").config()
 const PATH = require("path");
 const FS = require("fs");
 const YTDL = require("@distube/ytdl-core");
+const AXIOS = require("axios");
 const YTSEARCH = require("yt-search");
 const SCDownloader = require("soundcloud-downloader").default;
 const SpotifyWebApi = require("spotify-web-api-node");
@@ -541,7 +542,7 @@ function handleLocal(filename) {
 }
 
 async function fetchRadioStation(query) {
-    const response = await axios.get(`https://de1.api.radio-browser.info/json/stations/search`, {
+    const response = await AXIOS.get(`https://de1.api.radio-browser.info/json/stations/search`, {
         params: {
             name: query,
             limit: 5,
