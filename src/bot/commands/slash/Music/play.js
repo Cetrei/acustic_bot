@@ -592,7 +592,7 @@ async function playSong(queue, Interaction, playlist = false) {
     }
 
     const song = queue.songs.shift();
-    console.log(`Intentando reproducir: ${song}`);
+    console.log(`Intentando reproducir: ${song.url}`);
     let resource;
 
     try {
