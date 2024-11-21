@@ -10,7 +10,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const { stringSimilarity } = require("string-similarity-js");
 const { createAnswer, getGuildQueue, logger } = require(PATH.resolve("src", "bot", "utilities", "utilities.js"));
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { createAudioResource, getVoiceConnection, entersState, AudioPlayerStatus} = require("@discordjs/voice");
+const { createAudioResource, getVoiceConnection, entersState, AudioPlayerStatus, StreamType} = require("@discordjs/voice");
 ////   CONSTANTES  ////
 const Config = JSON.parse(FS.readFileSync(PATH.resolve("config","db.json")));
 const LOCAL_MUSIC_DIR = PATH.resolve("src", "music_files"); 
@@ -552,10 +552,22 @@ async function fetchRadioStation(query) {
     return response.data;
 }
 // Reproductor
+async function testURL(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log(`URL accesible: ${url}`);
+    } catch (error) {
+        console.error(`Error al acceder a la URL: ${error}`);
+    }
+}
 async function extractResource(song, playlist = false) {
     if (!song || !song.url) {
         throw Error("URL no válida o recurso no encontrado.");
     }
+    testURL(song.url);
 
     let resource;
     try {
@@ -564,7 +576,7 @@ async function extractResource(song, playlist = false) {
                 const stream = await SCDownloader.download(song.url);
                 resource = createAudioResource(stream);
             } else if (song.url.includes("spotify")) {
-                resource = createAudioResource(song.url, { inputType: "stream"});
+                resource = createAudioResource(song.url, { inputType: 'stream'});
             } else if (song.url.includes("youtube")) {
                 resource = createAudioResource(
                     YTDL(song.url, { filter: "audioonly", highWaterMark: 1 << 25 })
