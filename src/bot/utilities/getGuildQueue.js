@@ -23,6 +23,8 @@ module.exports = function getGuildQueue(guildId, voiceChannel = null) {
                 channelId: voiceChannel.id,
                 guildId: guildId,
                 adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+                selfDeaf: false,
+                forceNoDiscover: true
             });
     
             connection.on(VoiceConnectionStatus.Disconnected, async (oldState, newState) => {

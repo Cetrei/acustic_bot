@@ -563,6 +563,7 @@ async function testURL(url) {
         console.error(`Error al acceder a la URL: ${error}`);
     }
 }
+const prism = require('prism-media');
 async function extractResource(song, playlist = false) {
     if (!song || !song.url) {
         throw Error("URL no válida o recurso no encontrado.");
@@ -582,7 +583,20 @@ async function extractResource(song, playlist = false) {
                     YTDL(song.url, { filter: "audioonly", highWaterMark: 1 << 25 })
                 );
             } else {
-                resource = createAudioResource(song.url, { inputType: 'stream' });
+                const stream = new prism.FFmpeg({
+                    args: [
+                        '-reconnect', '1',
+                        '-reconnect_streamed', '1',
+                        '-reconnect_delay_max', '5',
+                        '-i', song.url,
+                        '-analyzeduration', '0',
+                        '-loglevel', '0',
+                        '-f', 's16le',
+                        '-ar', '48000',
+                        '-ac', '2',
+                    ],
+                });
+                resource = createAudioResource(stream, { inputType: StreamType.Raw  });
             }
         } else {
             resource = createAudioResource(song.url);
