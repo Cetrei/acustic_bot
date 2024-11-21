@@ -636,7 +636,7 @@ async function playSong(queue, Interaction, playlist = false) {
         console.log("Esperando que el player cambie al estado 'Playing'...");
         await entersState(queue.player, AudioPlayerStatus.Playing, 10000);
         queue.playing = true;
-        console.log(`Reproduciendo: ${song.title}`);
+        console.log(`Reproduciendo: ${song.title} | ${song.url}`);
     } catch (error) {
         console.error("Error en el estado de reproducción:", error);
         queue.playing = false;
